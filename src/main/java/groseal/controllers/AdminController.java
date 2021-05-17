@@ -59,8 +59,8 @@ public class AdminController {
     }
 
     //Получает данные из формы и обновляет данные юзера
-//    @PatchMapping(path = "/edit/{id}")
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PATCH)
+    @PatchMapping(path = "/edit/{id}")
+    @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam(value = "adminRole", defaultValue = "") String adminRole,
                              @RequestParam(value = "userRole", defaultValue = "") String userRole) {

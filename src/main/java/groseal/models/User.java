@@ -8,24 +8,24 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "nameUser"))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "name_user"))
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "idUser")
+    @Column(name = "id_user")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nameUser")
+    @Column(name = "name_user")
     private String name;
 
-    @Column(name = "passwordUser")
+    @Column(name = "password_user")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "idUser"),
-            inverseJoinColumns = @JoinColumn(name = "idRole"))
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_role"))
     private Set<Role> userRoles;
 
     public User() {

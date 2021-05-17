@@ -9,7 +9,7 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
-    @Column(name = "idRole")
+    @Column(name = "id_role")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -17,7 +17,7 @@ public class Role implements GrantedAuthority {
     private String role;
 
 //    @Transient
-//    @ManyToMany(mappedBy = "userRoles")
+//    @ManyToMany(mappedBy = "user_roles")
 //    private Set<User> users;
 
     public Role() {
