@@ -19,10 +19,7 @@
         <tr>
             <td><input required type="text" th:field="*{name}"/></td>
             <td><input required type="text" th:field="*{password}"/></td>
-            <td>
-                <input type="checkbox" name="adminRole" value="ROLE_ADMIN"/> Admin
-                <input type="checkbox" name="userRole" value="ROLE_USER"/> User
-            </td>
+            <td><input required type="text" th:field="*{userRoles}"/></td>
         </tr>
     </table>
     <p>
