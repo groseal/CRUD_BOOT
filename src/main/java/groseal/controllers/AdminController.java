@@ -42,13 +42,20 @@ public class AdminController {
 
     //Получает данные из формы и создает юзера
     @PostMapping("/addUser")
-    public String createUser(@ModelAttribute("user") User user,
-                             @RequestParam(value = "adminRole", defaultValue = "") String adminRole,
-                             @RequestParam(value = "userRole", defaultValue = "") String userRole) {
-        userService.createUser(user);
-        user.setUserRoles(getRoles(adminRole, userRole));
-        userService.updateUser(user);
-        return "redirect:/admin";
+    public String createUser(@ModelAttribute("user") User user) {
+        try {
+            Set<Role> roles = new HashSet<>();
+            for (Role r : roleService.getAllRoles()) {
+                if (user.getUserRoles().toString().contains(r.getRole())) {
+                    roles.add(roleService.getRoleByName(r.getRole()));
+                }
+            }
+            user.setUserRoles(roles);
+            userService.createUser(user);
+            return "redirect:/admin";
+        }catch (Exception e){
+            return "redirect:/new";
+        }
     }
 
     //Создает форму для редактирования юзера
@@ -61,30 +68,29 @@ public class AdminController {
     //Получает данные из формы и обновляет данные юзера
     @PatchMapping(path = "/edit/{id}")
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String updateUser(@ModelAttribute("user") User user,
-                             @RequestParam(value = "adminRole", defaultValue = "") String adminRole,
-                             @RequestParam(value = "userRole", defaultValue = "") String userRole) {
+    public String updateUser(@ModelAttribute("user") User user) {
+        try {
+            Set<Role> roles = new HashSet<>();
+            for (Role r : roleService.getAllRoles()) {
+                if (user.getUserRoles().toString().contains(r.getRole())) {
+                    roles.add(roleService.getRoleByName(r.getRole()));
+                }
+            }
+            user.setUserRoles(roles);
+            userService.updateUser(user);
+            return "redirect:/admin";
+        }catch (Exception e){
+            return "redirect:/editUser";
+        }
 
-        user.setUserRoles(getRoles(adminRole, userRole));
-        userService.updateUser(user);
-        return "redirect:/admin";
     }
 
     //Удаление юзера
-    @DeleteMapping({"/delete{id}"})
+    @PostMapping({"/delete{id}"})
+//    @DeleteMapping({"/delete{id}"})
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
 
-    private Set<Role> getRoles(String adminRole, String userRole) {
-        Set<Role> roles = new HashSet<>();
-        if (!adminRole.isEmpty()) {
-            roles.add(roleService.getRoleByName(adminRole));
-        }
-        if (!userRole.isEmpty()) {
-            roles.add(roleService.getRoleByName(userRole));
-        }
-        return roles;
-    }
 }
